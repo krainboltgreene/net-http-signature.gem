@@ -5,7 +5,7 @@ net-http-signature
   - [![Coverage](http://img.shields.io/codeclimate/coverage/github/krainboltgreene/net-http-signature.gem.svg?style=flat-square)](https://codeclimate.com/github/krainboltgreene/net-http-signature.gem)
   - [![Build](http://img.shields.io/travis-ci/krainboltgreene/net-http-signature.gem.svg?style=flat-square)](https://travis-ci.org/krainboltgreene/net-http-signature.gem)
   - [![Dependencies](http://img.shields.io/gemnasium/krainboltgreene/net-http-signature.gem.svg?style=flat-square)](https://gemnasium.com/krainboltgreene/net-http-signature.gem)
-  - [![Downloads](http://img.shields.io/gem/dtv/krainboltgreene/net-http-signature.svg?style=flat-square)](https://rubygems.org/gems/net-http-signature)
+  - [![Downloads](http://img.shields.io/gem/dtv/net-http-signature.svg?style=flat-square)](https://rubygems.org/gems/net-http-signature)
   - [![Tags](http://img.shields.io/github/tag/krainboltgreene/net-http-signature.gem.svg?style=flat-square)](http://github.com/krainboltgreene/net-http-signature.gem/tags)
   - [![Releases](http://img.shields.io/github/release/krainboltgreene/net-http-signature.gem.svg?style=flat-square)](http://github.com/krainboltgreene/net-http-signature.gem/releases)
   - [![Issues](http://img.shields.io/github/issues/krainboltgreene/net-http-signature.gem.svg?style=flat-square)](http://github.com/krainboltgreene/net-http-signature.gem/issues)
