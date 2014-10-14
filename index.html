@@ -1,0 +1,173 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Net HTTP Signature.gem by krainboltgreene</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="stylesheets/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  </head>
+  <body>
+      <div id="header">
+        <nav>
+          <li class="fork"><a href="https://github.com/krainboltgreene/net-http-signature.gem">View On GitHub</a></li>
+          <li class="downloads"><a href="https://github.com/krainboltgreene/net-http-signature.gem/zipball/master">ZIP</a></li>
+          <li class="downloads"><a href="https://github.com/krainboltgreene/net-http-signature.gem/tarball/master">TAR</a></li>
+          <li class="title">DOWNLOADS</li>
+        </nav>
+      </div><!-- end header -->
+
+    <div class="wrapper">
+
+      <section>
+        <div id="title">
+          <h1>Net HTTP Signature.gem</h1>
+          <p>Handle signing HTTP requests/responses</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/krainboltgreene">krainboltgreene</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></span>
+        </div>
+
+        <ul>
+<li><a href="https://rubygems.org/gems/net-http-signature"><img src="https://badge.fury.io/rb/net-http-signature.png" alt="Version"></a></li>
+<li><a href="https://codeclimate.com/github/krainboltgreene/net-http-signature"><img src="https://codeclimate.com/github/krainboltgreene/net-http-signature.png" alt="Climate"></a></li>
+<li><a href="https://travis-ci.org/krainboltgreene/net-http-signature"><img src="http://img.shields.io/travis-ci/krainboltgreene/net-http-signature.png" alt="Build"></a></li>
+<li><a href="https://gemnasium.com/krainboltgreene/net-http-signature"><img src="https://gemnasium.com/krainboltgreene/net-http-signature.png" alt="Dependencies"></a></li>
+<li><a href="http://opensource.org/licenses/MIT"><img src="http://img.shields.io/license/MIT.png?color=green" alt="License"></a></li>
+</ul>
+
+<p>This library gives you an interface for signing and validating HTTP requests/responses.</p>
+
+<h1>
+<a name="using" class="anchor" href="#using"><span class="octicon octicon-link"></span></a>Using</h1>
+
+<p>First lets assume we start from the consumer client. In this case we'll need to start with some request values:</p>
+
+<div class="highlight highlight-ruby"><pre><span class="nb">require</span> <span class="s2">"net/http/signature"</span>
+
+<span class="n">verb</span> <span class="o">=</span> <span class="s2">"GET"</span>
+<span class="n">uri</span> <span class="o">=</span> <span class="s2">"http://google.com?a=1&amp;b=2"</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="s2">"Date"</span> <span class="o">=&gt;</span> <span class="no">Time</span><span class="o">.</span><span class="n">now</span><span class="p">,</span>
+  <span class="s2">"Content-Type"</span> <span class="o">=&gt;</span> <span class="s2">"application/json"</span><span class="p">,</span>
+  <span class="s2">"Accept"</span> <span class="o">=&gt;</span> <span class="s2">"application/json"</span><span class="p">,</span>
+  <span class="s2">"Authentication"</span> <span class="o">=&gt;</span> <span class="s2">"Bearer fas425fmig.idfiodf"</span>
+<span class="p">}</span>
+<span class="n">body</span> <span class="o">=</span> <span class="s2">""</span>
+
+<span class="n">request</span> <span class="o">=</span> <span class="no">Net</span><span class="o">::</span><span class="no">HTTP</span><span class="o">::</span><span class="no">Signature</span><span class="o">::</span><span class="no">Request</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">verb</span><span class="p">:</span> <span class="n">verb</span><span class="p">,</span> <span class="ss">uri</span><span class="p">:</span> <span class="n">uri</span><span class="p">,</span> <span class="ss">headers</span><span class="p">:</span> <span class="n">headers</span><span class="p">,</span> <span class="ss">body</span><span class="p">:</span> <span class="n">body</span><span class="p">)</span>
+</pre></div>
+
+<p>The headers must include Date and cannot include Signature.</p>
+
+<p>Next we'll need to build a signer, the encrpytion:</p>
+
+<div class="highlight highlight-ruby"><pre><span class="n">secret</span> <span class="o">=</span> <span class="s2">"foozlebufzzle"</span>
+<span class="n">algorithm</span> <span class="o">=</span> <span class="s2">"hmac-sha512"</span>
+
+<span class="n">signer</span> <span class="o">=</span> <span class="no">Net</span><span class="o">::</span><span class="no">HTTP</span><span class="o">::</span><span class="no">Signature</span><span class="o">::</span><span class="no">Signer</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">request</span><span class="p">:</span> <span class="n">request</span><span class="p">,</span> <span class="ss">secret</span><span class="p">:</span> <span class="n">secret</span><span class="p">,</span> <span class="ss">algorithm</span><span class="p">:</span> <span class="n">algorithm</span><span class="p">)</span>
+</pre></div>
+
+<p>The secret is the consumer secret for the API. Similar to a user's password.</p>
+
+<p>Finally we need to build the signature:</p>
+
+<div class="highlight highlight-ruby"><pre><span class="n">key</span> <span class="o">=</span> <span class="s2">"krainboltgreene"</span>
+
+<span class="n">signature</span> <span class="o">=</span> <span class="no">Net</span><span class="o">::</span><span class="no">HTTP</span><span class="o">::</span><span class="no">Signature</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">key</span><span class="p">:</span> <span class="n">key</span><span class="p">,</span> <span class="ss">signer</span><span class="p">:</span> <span class="n">signer</span><span class="p">)</span>
+</pre></div>
+
+<p>The key in this case is the consumer key for the API. Similar to a user's username or email.</p>
+
+<p>You can now turn this into a header key/value:</p>
+
+<div class="highlight highlight-ruby"><pre><span class="n">signature</span><span class="o">.</span><span class="n">to_h</span>
+  <span class="c1"># =&gt;</span>
+  <span class="c1">#   {</span>
+  <span class="c1">#     "Signature" =&gt; "key=krainboltgreene algorithm=hmac-sha512 headers=Date,Content-Type,Accept token=06MNzV00902BKawOL5UwhKf9hJUR97RizAtyr6+xhwF94ne0/Uz/MTRRDrJQ\nLdfHyBuuuXEMVYeg24xDcsTaFA==\n"</span>
+  <span class="c1">#   }</span>
+</pre></div>
+
+<p>You would take this hash and merge it into the request's headers, sending to the server. The API server would consume the request, extract the <code>"Signature"</code> pair, and do the above steps. For the server to complete the steps you need to also take the <code>key</code> value of the <code>Signature</code> header and look up the consumer secret.</p>
+
+<p>If the consumer key exists in your system and the <code>Net::HTTP::Signature</code> object is built with that discovered consumer secret you can proceed to validate the request.</p>
+
+<p>To validate you  need call the <code>Net::HTTP::Signature#valid?</code> method:</p>
+
+<div class="highlight highlight-ruby"><pre><span class="n">signature</span><span class="o">.</span><span class="n">valid?</span><span class="p">(</span><span class="n">request_headers</span><span class="o">[</span><span class="s2">"Signature"</span><span class="o">]</span><span class="p">)</span>
+  <span class="c1"># =&gt; true</span>
+</pre></div>
+
+<p>If the return is true then you should make sure the request's <code>Date</code> header is within a 6 second window. This will prevent attackers from being able to indefinitely use requests they've obtained.</p>
+
+<h1>
+<a name="installing" class="anchor" href="#installing"><span class="octicon octicon-link"></span></a>Installing</h1>
+
+<p>Add this line to your application's Gemfile:</p>
+
+<pre><code>gem "net-http-signature", "~&gt; 1.0"
+</code></pre>
+
+<p>And then execute:</p>
+
+<pre><code>$ bundle
+</code></pre>
+
+<p>Or install it yourself with:</p>
+
+<pre><code>$ gem install net-http-signature
+</code></pre>
+
+<h1>
+<a name="contributing" class="anchor" href="#contributing"><span class="octicon octicon-link"></span></a>Contributing</h1>
+
+<ol>
+<li>Fork it</li>
+<li>Create your feature branch (<code>git checkout -b my-new-feature</code>)</li>
+<li>Commit your changes (<code>git commit -am 'Add some feature'</code>)</li>
+<li>Push to the branch (<code>git push origin my-new-feature</code>)</li>
+<li>Create new Pull Request</li>
+</ol>
+
+<h1>
+<a name="licensing" class="anchor" href="#licensing"><span class="octicon octicon-link"></span></a>Licensing</h1>
+
+<p>Copyright (c) 2013 Kurtis Rainbolt-Greene</p>
+
+<p>MIT License</p>
+
+<p>Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+"Software"), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:</p>
+
+<p>The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.</p>
+
+<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
+      </section>
+
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
+  </body>
+</html>
