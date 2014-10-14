@@ -2,9 +2,9 @@ net-http-signature
 ------------------
 
   - [![Version](https://badge.fury.io/rb/net-http-signature.png)](https://rubygems.org/gems/net-http-signature)
-  - [![Climate](https://codeclimate.com/github/krainboltgreene/net-http-signature.png)](https://codeclimate.com/github/krainboltgreene/net-http-signature)
-  - [![Build](http://img.shields.io/travis-ci/krainboltgreene/net-http-signature.png)](https://travis-ci.org/krainboltgreene/net-http-signature)
-  - [![Dependencies](https://gemnasium.com/krainboltgreene/net-http-signature.png)](https://gemnasium.com/krainboltgreene/net-http-signature)
+  - [![Climate](https://codeclimate.com/github/krainboltgreene/net-http-signature.gem.png)](https://codeclimate.com/github/krainboltgreene/net-http-signature.gem)
+  - [![Build](http://img.shields.io/travis-ci/krainboltgreene/net-http-signature.gem.png)](https://travis-ci.org/krainboltgreene/net-http-signature.gem)
+  - [![Dependencies](https://gemnasium.com/krainboltgreene/net-http-signature.gem.png)](https://gemnasium.com/krainboltgreene/net-http-signature.gem)
   - [![License](http://img.shields.io/license/MIT.png?color=green)](http://opensource.org/licenses/MIT)
 
 This library gives you an interface for signing and validating HTTP requests/responses.
