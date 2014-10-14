@@ -1,3 +1,3 @@
 require "pry"
 require "rspec"
-require "blankgem"
+require "net-http-signature"
