@@ -1,25 +1,86 @@
-blankgem
---------
+net-http-signature
+------------------
 
-  - [![Quality](http://img.shields.io/codeclimate/github/krainboltgreene/blankgem.gem.svg?style=flat-square)](https://codeclimate.com/github/krainboltgreene/blankgem.gem)
-  - [![Coverage](http://img.shields.io/codeclimate/coverage/github/krainboltgreene/blankgem.gem.svg?style=flat-square)](https://codeclimate.com/github/krainboltgreene/blankgem.gem)
-  - [![Build](http://img.shields.io/travis-ci/krainboltgreene/blankgem.gem.svg?style=flat-square)](https://travis-ci.org/krainboltgreene/blankgem.gem)
-  - [![Dependencies](http://img.shields.io/gemnasium/krainboltgreene/blankgem.gem.svg?style=flat-square)](https://gemnasium.com/krainboltgreene/blankgem.gem)
-  - [![Downloads](http://img.shields.io/gem/dtv/krainboltgreene/blankgem.svg?style=flat-square)](https://rubygems.org/gems/blankgem)
-  - [![Tags](http://img.shields.io/github/tag/krainboltgreene/blankgem.gem.svg?style=flat-square)](http://github.com/krainboltgreene/blankgem.gem/tags)
-  - [![Releases](http://img.shields.io/github/release/krainboltgreene/blankgem.gem.svg?style=flat-square)](http://github.com/krainboltgreene/blankgem.gem/releases)
-  - [![Issues](http://img.shields.io/github/issues/krainboltgreene/blankgem.gem.svg?style=flat-square)](http://github.com/krainboltgreene/blankgem.gem/issues)
+  - [![Quality](http://img.shields.io/codeclimate/github/krainboltgreene/net-http-signature.gem.svg?style=flat-square)](https://codeclimate.com/github/krainboltgreene/net-http-signature.gem)
+  - [![Coverage](http://img.shields.io/codeclimate/coverage/github/krainboltgreene/net-http-signature.gem.svg?style=flat-square)](https://codeclimate.com/github/krainboltgreene/net-http-signature.gem)
+  - [![Build](http://img.shields.io/travis-ci/krainboltgreene/net-http-signature.gem.svg?style=flat-square)](https://travis-ci.org/krainboltgreene/net-http-signature.gem)
+  - [![Dependencies](http://img.shields.io/gemnasium/krainboltgreene/net-http-signature.gem.svg?style=flat-square)](https://gemnasium.com/krainboltgreene/net-http-signature.gem)
+  - [![Downloads](http://img.shields.io/gem/dtv/krainboltgreene/net-http-signature.svg?style=flat-square)](https://rubygems.org/gems/net-http-signature)
+  - [![Tags](http://img.shields.io/github/tag/krainboltgreene/net-http-signature.gem.svg?style=flat-square)](http://github.com/krainboltgreene/net-http-signature.gem/tags)
+  - [![Releases](http://img.shields.io/github/release/krainboltgreene/net-http-signature.gem.svg?style=flat-square)](http://github.com/krainboltgreene/net-http-signature.gem/releases)
+  - [![Issues](http://img.shields.io/github/issues/krainboltgreene/net-http-signature.gem.svg?style=flat-square)](http://github.com/krainboltgreene/net-http-signature.gem/issues)
   - [![License](http://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](http://opensource.org/licenses/MIT)
-  - [![Version](http://img.shields.io/gem/v/blankgem.svg?style=flat-square)](https://rubygems.org/gems/blankgem)
+  - [![Version](http://img.shields.io/gem/v/net-http-signature.svg?style=flat-square)](https://rubygems.org/gems/net-http-signature)
 
-
-TODO: Write a gem description
+This library gives you an interface for signing and validating HTTP requests/responses.
 
 
 Using
 =====
 
-TODO: Write usage instructions here
+First lets assume we start from the consumer client. In this case we'll need to start with some request values:
+
+``` ruby
+require "net/http/signature"
+
+verb = "GET"
+uri = "http://google.com?a=1&b=2"
+headers = {
+  "Date" => Time.now,
+  "Content-Type" => "application/json",
+  "Accept" => "application/json",
+  "Authentication" => "Bearer fas425fmig.idfiodf"
+}
+body = ""
+
+request = Net::HTTP::Signature::Request.new(verb: verb, uri: uri, headers: headers, body: body)
+```
+
+The headers must include Date and cannot include Signature.
+
+Next we'll need to build a signer, the encrpytion:
+
+``` ruby
+secret = "foozlebufzzle"
+algorithm = "hmac-sha512"
+
+signer = Net::HTTP::Signature::Signer.new(request: request, secret: secret, algorithm: algorithm)
+```
+
+The secret is the consumer secret for the API. Similar to a user's password.
+
+Finally we need to build the signature:
+
+``` ruby
+key = "krainboltgreene"
+
+signature = Net::HTTP::Signature.new(key: key, signer: signer)
+```
+
+The key in this case is the consumer key for the API. Similar to a user's username or email.
+
+You can now turn this into a header key/value:
+
+``` ruby
+signature.to_h
+  # =>
+  #   {
+  #     "Signature" => "key=krainboltgreene algorithm=hmac-sha512 headers=Date,Content-Type,Accept token=06MNzV00902BKawOL5UwhKf9hJUR97RizAtyr6+xhwF94ne0/Uz/MTRRDrJQ\nLdfHyBuuuXEMVYeg24xDcsTaFA==\n"
+  #   }
+```
+
+You would take this hash and merge it into the request's headers, sending to the server. The API server would consume the request, extract the `"Signature"` pair, and do the above steps. For the server to complete the steps you need to also take the `key` value of the `Signature` header and look up the consumer secret.
+
+If the consumer key exists in your system and the `Net::HTTP::Signature` object is built with that discovered consumer secret you can proceed to validate the request.
+
+To validate you  need call the `Net::HTTP::Signature#valid?` method:
+
+``` ruby
+signature.valid?(request_headers["Signature"])
+  # => true
+```
+
+If the return is true then you should make sure the request's `Date` header is within a 6 second window. This will prevent attackers from being able to indefinitely use requests they've obtained.
 
 
 Installing
@@ -27,7 +88,7 @@ Installing
 
 Add this line to your application's Gemfile:
 
-    gem "blankgem", "~> 1.0"
+    gem "net-http-signature", "~> 1.0"
 
 And then execute:
 
@@ -35,7 +96,7 @@ And then execute:
 
 Or install it yourself with:
 
-    $ gem install blankgem
+    $ gem install net-http-signature
 
 
 Contributing

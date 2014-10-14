@@ -3,7 +3,7 @@ INSTALLING
 
 Add this line to your application's Gemfile:
 
-    gem "blankgem", "~> 1.0"
+    gem "net-http-signature", "~> 1.0"
 
 And then execute:
 
@@ -11,4 +11,4 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install blankgem
+    $ gem install net-http-signature
