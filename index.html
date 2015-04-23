@@ -1,34 +1,25 @@
 <!DOCTYPE html>
-<html>
+<html lang="en-us">
   <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <meta charset="UTF-8">
+    <title>Net-http-signature.gem by krainboltgreene</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
-
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-
-    <title>Net HTTP Signature.gem by krainboltgreene</title>
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
   </head>
-
   <body>
-    <header>
-      <div class="inner">
-        <h1>Net HTTP Signature.gem</h1>
-        <h2>Handle signing HTTP requests/responses</h2>
-        <a href="https://github.com/krainboltgreene/net-http-signature.gem" class="button"><small>View project on</small> GitHub</a>
-      </div>
-    </header>
+    <section class="page-header">
+      <h1 class="project-name">Net-http-signature.gem</h1>
+      <h2 class="project-tagline">Handle signing HTTP requests/responses</h2>
+      <a href="https://github.com/krainboltgreene/net-http-signature.gem" class="btn">View on GitHub</a>
+      <a href="https://github.com/krainboltgreene/net-http-signature.gem/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/krainboltgreene/net-http-signature.gem/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
 
-    <div id="content-wrapper">
-      <div class="inner clearfix">
-        <section id="main-content">
-          <ul>
+    <section class="main-content">
+      <ul>
 <li><a href="https://codeclimate.com/github/krainboltgreene/net-http-signature.gem"><img src="http://img.shields.io/codeclimate/github/krainboltgreene/net-http-signature.gem.svg?style=flat-square" alt="Quality"></a></li>
 <li><a href="https://codeclimate.com/github/krainboltgreene/net-http-signature.gem"><img src="http://img.shields.io/codeclimate/coverage/github/krainboltgreene/net-http-signature.gem.svg?style=flat-square" alt="Coverage"></a></li>
 <li><a href="https://travis-ci.org/krainboltgreene/net-http-signature.gem"><img src="http://img.shields.io/travis-ci/krainboltgreene/net-http-signature.gem.svg?style=flat-square" alt="Build"></a></li>
@@ -44,54 +35,50 @@
 <p>This library gives you an interface for signing and validating HTTP requests/responses.</p>
 
 <h1>
-<a name="using" class="anchor" href="#using"><span class="octicon octicon-link"></span></a>Using</h1>
+<a id="using" class="anchor" href="#using" aria-hidden="true"><span class="octicon octicon-link"></span></a>Using</h1>
 
 <p>First lets assume we start from the consumer client. In this case we'll need to start with some request values:</p>
 
-<div class="highlight highlight-ruby"><pre><span class="nb">require</span> <span class="s2">"net/http/signature"</span>
+<div class="highlight highlight-ruby"><pre><span class="pl-k">require</span> <span class="pl-s"><span class="pl-pds">"</span>net/http/signature<span class="pl-pds">"</span></span>
 
-<span class="n">verb</span> <span class="o">=</span> <span class="s2">"GET"</span>
-<span class="n">uri</span> <span class="o">=</span> <span class="s2">"http://google.com?a=1&amp;b=2"</span>
-<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
-  <span class="s2">"Date"</span> <span class="o">=&gt;</span> <span class="no">Time</span><span class="o">.</span><span class="n">now</span><span class="p">,</span>
-  <span class="s2">"Content-Type"</span> <span class="o">=&gt;</span> <span class="s2">"application/json"</span><span class="p">,</span>
-  <span class="s2">"Accept"</span> <span class="o">=&gt;</span> <span class="s2">"application/json"</span><span class="p">,</span>
-  <span class="s2">"Authentication"</span> <span class="o">=&gt;</span> <span class="s2">"Bearer fas425fmig.idfiodf"</span>
-<span class="p">}</span>
-<span class="n">body</span> <span class="o">=</span> <span class="s2">""</span>
+verb <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>GET<span class="pl-pds">"</span></span>
+uri <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>http://google.com?a=1&amp;b=2<span class="pl-pds">"</span></span>
+headers <span class="pl-k">=</span> {
+  <span class="pl-s"><span class="pl-pds">"</span>Date<span class="pl-pds">"</span></span> =&gt; <span class="pl-c1">Time</span>.now,
+  <span class="pl-s"><span class="pl-pds">"</span>Content-Type<span class="pl-pds">"</span></span> =&gt; <span class="pl-s"><span class="pl-pds">"</span>application/json<span class="pl-pds">"</span></span>,
+  <span class="pl-s"><span class="pl-pds">"</span>Accept<span class="pl-pds">"</span></span> =&gt; <span class="pl-s"><span class="pl-pds">"</span>application/json<span class="pl-pds">"</span></span>,
+  <span class="pl-s"><span class="pl-pds">"</span>Authentication<span class="pl-pds">"</span></span> =&gt; <span class="pl-s"><span class="pl-pds">"</span>Bearer fas425fmig.idfiodf<span class="pl-pds">"</span></span>
+}
+body <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>
 
-<span class="n">request</span> <span class="o">=</span> <span class="no">Net</span><span class="o">::</span><span class="no">HTTP</span><span class="o">::</span><span class="no">Signature</span><span class="o">::</span><span class="no">Request</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">verb</span><span class="p">:</span> <span class="n">verb</span><span class="p">,</span> <span class="ss">uri</span><span class="p">:</span> <span class="n">uri</span><span class="p">,</span> <span class="ss">headers</span><span class="p">:</span> <span class="n">headers</span><span class="p">,</span> <span class="ss">body</span><span class="p">:</span> <span class="n">body</span><span class="p">)</span>
-</pre></div>
+request <span class="pl-k">=</span> <span class="pl-c1">Net</span>::<span class="pl-c1">HTTP</span>::<span class="pl-c1">Signature</span>::<span class="pl-c1">Request</span>.<span class="pl-k">new</span>(<span class="pl-c1">verb:</span> verb, <span class="pl-c1">uri:</span> uri, <span class="pl-c1">headers:</span> headers, <span class="pl-c1">body:</span> body)</pre></div>
 
 <p>The headers must include Date and cannot include Signature.</p>
 
 <p>Next we'll need to build a signer, the encrpytion:</p>
 
-<div class="highlight highlight-ruby"><pre><span class="n">secret</span> <span class="o">=</span> <span class="s2">"foozlebufzzle"</span>
-<span class="n">algorithm</span> <span class="o">=</span> <span class="s2">"hmac-sha512"</span>
+<div class="highlight highlight-ruby"><pre>secret <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>foozlebufzzle<span class="pl-pds">"</span></span>
+algorithm <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>hmac-sha512<span class="pl-pds">"</span></span>
 
-<span class="n">signer</span> <span class="o">=</span> <span class="no">Net</span><span class="o">::</span><span class="no">HTTP</span><span class="o">::</span><span class="no">Signature</span><span class="o">::</span><span class="no">Signer</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">request</span><span class="p">:</span> <span class="n">request</span><span class="p">,</span> <span class="ss">secret</span><span class="p">:</span> <span class="n">secret</span><span class="p">,</span> <span class="ss">algorithm</span><span class="p">:</span> <span class="n">algorithm</span><span class="p">)</span>
-</pre></div>
+signer <span class="pl-k">=</span> <span class="pl-c1">Net</span>::<span class="pl-c1">HTTP</span>::<span class="pl-c1">Signature</span>::<span class="pl-c1">Signer</span>.<span class="pl-k">new</span>(<span class="pl-c1">request:</span> request, <span class="pl-c1">secret:</span> secret, <span class="pl-c1">algorithm:</span> algorithm)</pre></div>
 
 <p>The secret is the consumer secret for the API. Similar to a user's password.</p>
 
 <p>Finally we need to build the signature:</p>
 
-<div class="highlight highlight-ruby"><pre><span class="n">key</span> <span class="o">=</span> <span class="s2">"krainboltgreene"</span>
+<div class="highlight highlight-ruby"><pre>key <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>krainboltgreene<span class="pl-pds">"</span></span>
 
-<span class="n">signature</span> <span class="o">=</span> <span class="no">Net</span><span class="o">::</span><span class="no">HTTP</span><span class="o">::</span><span class="no">Signature</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">key</span><span class="p">:</span> <span class="n">key</span><span class="p">,</span> <span class="ss">signer</span><span class="p">:</span> <span class="n">signer</span><span class="p">)</span>
-</pre></div>
+signature <span class="pl-k">=</span> <span class="pl-c1">Net</span>::<span class="pl-c1">HTTP</span>::<span class="pl-c1">Signature</span>.<span class="pl-k">new</span>(<span class="pl-c1">key:</span> key, <span class="pl-c1">signer:</span> signer)</pre></div>
 
 <p>The key in this case is the consumer key for the API. Similar to a user's username or email.</p>
 
 <p>You can now turn this into a header key/value:</p>
 
-<div class="highlight highlight-ruby"><pre><span class="n">signature</span><span class="o">.</span><span class="n">to_h</span>
-  <span class="c1"># =&gt;</span>
-  <span class="c1">#   {</span>
-  <span class="c1">#     "Signature" =&gt; "key=krainboltgreene algorithm=hmac-sha512 headers=Date,Content-Type,Accept token=06MNzV00902BKawOL5UwhKf9hJUR97RizAtyr6+xhwF94ne0/Uz/MTRRDrJQ\nLdfHyBuuuXEMVYeg24xDcsTaFA==\n"</span>
-  <span class="c1">#   }</span>
-</pre></div>
+<div class="highlight highlight-ruby"><pre>signature.to_h
+  <span class="pl-c"># =&gt;</span>
+  <span class="pl-c">#   {</span>
+  <span class="pl-c">#     "Signature" =&gt; "key=krainboltgreene algorithm=hmac-sha512 headers=Date,Content-Type,Accept token=06MNzV00902BKawOL5UwhKf9hJUR97RizAtyr6+xhwF94ne0/Uz/MTRRDrJQ\nLdfHyBuuuXEMVYeg24xDcsTaFA==\n"</span>
+  <span class="pl-c">#   }</span></pre></div>
 
 <p>You would take this hash and merge it into the request's headers, sending to the server. The API server would consume the request, extract the <code>"Signature"</code> pair, and do the above steps. For the server to complete the steps you need to also take the <code>key</code> value of the <code>Signature</code> header and look up the consumer secret.</p>
 
@@ -99,14 +86,13 @@
 
 <p>To validate you  need call the <code>Net::HTTP::Signature#valid?</code> method:</p>
 
-<div class="highlight highlight-ruby"><pre><span class="n">signature</span><span class="o">.</span><span class="n">valid?</span><span class="p">(</span><span class="n">request_headers</span><span class="o">[</span><span class="s2">"Signature"</span><span class="o">]</span><span class="p">)</span>
-  <span class="c1"># =&gt; true</span>
-</pre></div>
+<div class="highlight highlight-ruby"><pre>signature.valid?(request_headers[<span class="pl-s"><span class="pl-pds">"</span>Signature<span class="pl-pds">"</span></span>])
+  <span class="pl-c"># =&gt; true</span></pre></div>
 
 <p>If the return is true then you should make sure the request's <code>Date</code> header is within a 6 second window. This will prevent attackers from being able to indefinitely use requests they've obtained.</p>
 
 <h1>
-<a name="installing" class="anchor" href="#installing"><span class="octicon octicon-link"></span></a>Installing</h1>
+<a id="installing" class="anchor" href="#installing" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installing</h1>
 
 <p>Add this line to your application's Gemfile:</p>
 
@@ -124,7 +110,7 @@
 </code></pre>
 
 <h1>
-<a name="contributing" class="anchor" href="#contributing"><span class="octicon octicon-link"></span></a>Contributing</h1>
+<a id="contributing" class="anchor" href="#contributing" aria-hidden="true"><span class="octicon octicon-link"></span></a>Contributing</h1>
 
 <ol>
 <li>Fork it</li>
@@ -135,7 +121,7 @@
 </ol>
 
 <h1>
-<a name="licensing" class="anchor" href="#licensing"><span class="octicon octicon-link"></span></a>Licensing</h1>
+<a id="licensing" class="anchor" href="#licensing" aria-hidden="true"><span class="octicon octicon-link"></span></a>Licensing</h1>
 
 <p>Copyright (c) 2013 Kurtis Rainbolt-Greene</p>
 
@@ -159,25 +145,26 @@ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
 LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
-        </section>
 
-        <aside id="sidebar">
-          <a href="https://github.com/krainboltgreene/net-http-signature.gem/zipball/master" class="button">
-            <small>Download</small>
-            .zip file
-          </a>
-          <a href="https://github.com/krainboltgreene/net-http-signature.gem/tarball/master" class="button">
-            <small>Download</small>
-            .tar.gz file
-          </a>
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/krainboltgreene/net-http-signature.gem">Net-http-signature.gem</a> is maintained by <a href="https://github.com/krainboltgreene">krainboltgreene</a>.</span>
 
-          <p class="repo-owner"><a href="https://github.com/krainboltgreene/net-http-signature.gem"></a> is maintained by <a href="https://github.com/krainboltgreene">krainboltgreene</a>.</p>
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
 
-          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
-        </aside>
-      </div>
-    </div>
+    </section>
 
-  
+            <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-18715035-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
   </body>
 </html>
+
