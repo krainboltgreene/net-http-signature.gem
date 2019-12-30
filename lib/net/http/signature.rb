@@ -1,5 +1,6 @@
 require "base64"
 require "openssl"
+require "net/http"
 
 module Net
   class HTTP
