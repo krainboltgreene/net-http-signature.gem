@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.name          = "net-http-signature"
   spec.version       = Net::HTTP::Signature::VERSION
   spec.authors       = ["Kurtis Rainbolt-Greene"]
-  spec.email         = ["me@kurtisrainboltgreene.name"]
+  spec.email         = ["kurtis@rainbolt-greene.online"]
   spec.summary       = %q{A signing library for HTTP requests}
   spec.description   = spec.summary
   spec.homepage      = "http://krainboltgreene.github.io/net-http-signature"
@@ -20,7 +20,7 @@ Gem::Specification.new do |spec|
   spec.test_files    = Dir["test/**/*", "spec/**/*"]
   spec.require_paths = ["lib"]
 
-  spec.add_development_dependency "bundler", "~> 1.3"
+  spec.add_development_dependency "bundler", "~> 2.1"
   spec.add_development_dependency "rspec", "~> 3.0"
   spec.add_development_dependency "rake", "~> 10.1"
   spec.add_development_dependency "pry", "~> 0.9"
