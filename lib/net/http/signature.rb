@@ -16,7 +16,7 @@ module Net
       end
 
       def valid?(string)
-        to_s == string
+        to_s.strip == string.strip
       end
 
       def to_s
